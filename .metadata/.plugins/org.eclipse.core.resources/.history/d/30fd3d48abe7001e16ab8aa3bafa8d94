@@ -1,0 +1,167 @@
+package com.microservice.leadassessment.productservice.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.microservice.leadassessment.productservice.dto.AttributesDto;
+import com.microservice.leadassessment.productservice.dto.InventoryDto;
+import com.microservice.leadassessment.productservice.dto.PriceDto;
+import com.microservice.leadassessment.productservice.dto.ProductDto;
+import com.microservice.leadassessment.productservice.dto.SaveInventoryDto;
+import com.microservice.leadassessment.productservice.dto.SavePriceDto;
+import com.microservice.leadassessment.productservice.entity.Attributes;
+import com.microservice.leadassessment.productservice.entity.Product;
+import com.microservice.leadassessment.productservice.exception.ResourceNotFoundException;
+import com.microservice.leadassessment.productservice.mapper.ProductMapper;
+import com.microservice.leadassessment.productservice.service.InventoryAPIClient;
+import com.microservice.leadassessment.productservice.service.PriceAPIClient;
+import com.microservice.leadassessment.productservice.service.ProductService;
+import com.microservice.leadassessment.productservice.repository.*;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class ProductServiceImpl implements ProductService{
+	
+	private ProductRepository productRepository;
+	private AttributeRepository attributeRepository;
+	private RestTemplate restTemplate;
+	private PriceAPIClient  priceAPIClient;
+	private InventoryAPIClient inventoryAPIClient;
+	 
+	@Override
+	public ProductDto saveProduct(ProductDto productDto) {
+		// TODO Auto-generated method stub
+		List<AttributesDto> dtolist = productDto.getAttributes();
+		PriceDto priceDto = productDto.getPrice();
+		InventoryDto inventoryDto = productDto.getInventory();
+		
+		Product product = ProductMapper.mapToProduct(productDto);		
+		Product savedProduct = productRepository.save(product);
+		
+		Attributes attribute;
+		
+		for (AttributesDto dto : dtolist) {
+			attribute = new Attributes();
+			attribute.setName(dto.getName());
+			attribute.setValue(dto.getValue());
+			attribute.setProductName(savedProduct.getProductname());			
+			attributeRepository.save(attribute);	
+		}		
+						 
+		ProductDto savedproductDto = ProductMapper.mapToProductDto(savedProduct);
+		savedproductDto.setAttributes(dtolist);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		SavePriceDto pricerequest = new SavePriceDto();
+		pricerequest.setCurrency( priceDto.getCurrency());
+		pricerequest.setAmount( priceDto.getAmount());
+		pricerequest.setProductName( savedProduct.getProductname());
+		savedproductDto.setPrice( priceAPIClient.savePrice(pricerequest));
+		
+		//HttpEntity<String> priceentity = new HttpEntity<String>(pricerequest.toString(),headers);		
+		//ResponseEntity<String> priceresponse = restTemplate.exchange("http://localhost:8090/api/shopping/price", HttpMethod.POST, priceentity, String.class);
+		//if(priceresponse.getStatusCode()== HttpStatus.CREATED)
+			 //savedproductDto.setPrice(priceDto);
+		
+		SaveInventoryDto inventoryrequest = new SaveInventoryDto();
+		inventoryrequest.setTotal(inventoryDto.getTotal());
+		inventoryrequest.setAvailable( inventoryDto.getAvailable());
+		inventoryrequest.setReserved( inventoryDto.getReserved());
+		inventoryrequest.setProductName(savedProduct.getProductname());
+		HttpEntity<String> inventoryentity = new HttpEntity<String>(inventoryrequest.toString(),headers);
+		ResponseEntity<String> inventoryresponse = restTemplate.exchange("http://localhost:8091/api/shopping/inventory", HttpMethod.POST, inventoryentity, String.class);
+		if(inventoryresponse.getStatusCode()== HttpStatus.CREATED)
+			 savedproductDto.setInventory(inventoryDto);
+		 
+		return savedproductDto;
+	}
+
+	@Override
+	public ProductDto getProductByname(String name) {
+		// TODO Auto-generated method stub
+		
+		Product product = productRepository.findByproductname(name);
+		if(product != null)
+		{
+			return convertToProductDto(product);
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public void deleteProductByname(String name) {
+
+		  Product existingProduct = productRepository.findById(name).orElseThrow(
+	                () -> new ResourceNotFoundException("Product", "ProductName", name)
+	        );
+
+		  productRepository.deleteById(name);
+		  List<Attributes> attributeslist=attributeRepository.findByproductName(name);
+		  
+		  attributeRepository.deleteAllInBatch(attributeslist);
+		  priceAPIClient.deletePrice(name);
+		  inventoryAPIClient.deleteInventory(name);
+		  
+	}
+
+	@Override
+	public List<ProductDto> getAllProducts() {
+		
+		List<Product> productlist = 	productRepository.findAll();
+		List<ProductDto> productDtolist = new ArrayList<>();
+		if(productlist != null)
+		{
+			for (Product product : productlist) {			
+				productDtolist.add(convertToProductDto(product));
+			}
+		
+			return productDtolist;
+		}
+		else		
+			return null;
+	}
+	
+	
+	public ProductDto convertToProductDto(Product product) {
+		
+		ProductDto productDto = ProductMapper.mapToProductDto(product);
+		List<Attributes> listattributes = attributeRepository.findByproductName(product.getProductname());
+				
+		List<AttributesDto> list_attributesDto = new ArrayList<>();
+		AttributesDto adto;
+		
+		for (Attributes attributes : listattributes) {
+			adto=new AttributesDto();
+			adto.setName(attributes.getName()); 
+			adto.setValue(attributes.getValue());
+			list_attributesDto.add(adto);
+		}	
+		  productDto.setAttributes(list_attributesDto);
+		
+		 // ResponseEntity<PriceDto> responseEntity = restTemplate.getForEntity("http://localhost:8090/api/shopping/price/" + productDto.getProductname(), PriceDto.class);		 
+		  PriceDto priceDto = priceAPIClient.getPriceByProductName(productDto.getProductname());
+		  
+		  InventoryDto inventoryDto = inventoryAPIClient.getInventory(productDto.getProductname());
+		  			 
+		  productDto.setPrice(priceDto);
+		  productDto.setInventory(inventoryDto);
+		  
+	     return productDto;	
+	}
+	
+
+}

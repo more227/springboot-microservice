@@ -1,0 +1,25 @@
+package com.microservice.leadassessment.productservice.entity;
+
+
+
+import lombok.*;
+
+import jakarta.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "attributes")
+public class Attributes {
+    
+	
+    private String name;	
+    private String value;
+   
+    @Id
+	@ManyToOne
+	//@JoinColumn(name = "fk_product")
+	//private Product product;
+}

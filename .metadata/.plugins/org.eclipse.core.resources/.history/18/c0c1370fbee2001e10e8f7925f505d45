@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.repository;
+
+public class AttributeRepository {
+
+}

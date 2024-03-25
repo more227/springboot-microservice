@@ -1,0 +1,8 @@
+package com.microservice.leadassessment.productservice.dto;
+
+public class PriceDto {
+	
+	private String currency;
+	private String amount;
+
+}

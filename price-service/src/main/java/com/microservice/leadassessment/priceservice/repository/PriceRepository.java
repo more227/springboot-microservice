@@ -1,0 +1,10 @@
+package com.microservice.leadassessment.priceservice.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.microservice.leadassessment.priceservice.entity.Price;
+
+public interface PriceRepository extends JpaRepository<Price, Long>{
+
+	Price findByproductName(String productName);	
+}

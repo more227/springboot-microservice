@@ -1,0 +1,26 @@
+package com.microservice.leadassessment.productservice.entity;
+
+import lombok.*;
+
+import jakarta.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "product")
+@SecondaryTable(name = "attributes")
+public class Product {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String productname;
+    private String brand;
+    private String description;
+    
+    @Embedded
+    private Attributes attributes;
+    
+    
+}

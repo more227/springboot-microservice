@@ -1,0 +1,32 @@
+package com.microservice.leadassessment.inventoryservice.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.microservice.leadassessment.inventoryservice.service.InventoryService;
+import com.microservice.leadassessment.inventoryservice.repository.InventoryRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class InventoryServiceImpl implements InventoryService{
+
+	private InventoryRepository inventoryRepository;
+	@Override
+	public PriceDto savePrice(PriceDto priceDto) {
+		Price price= PriceMapper.mapToPrice(priceDto);
+		Price savedPrice=inventoryRepository.save(price);
+		PriceDto savedPriceDto = PriceMapper.mapToPriceDto(savedPrice);
+		
+		return savedPriceDto;
+	}
+
+	@Override
+	public PriceDto getPriceByproductName(String productName) {
+		
+		 Price price = inventoryRepository.findByproductName(productName);
+	     PriceDto priceDto = PriceMapper.mapToPriceDto(price);
+
+	     return priceDto;		
+	}
+}

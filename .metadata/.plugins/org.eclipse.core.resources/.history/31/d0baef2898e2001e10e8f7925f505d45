@@ -1,0 +1,9 @@
+package com.microservice.leadassessment.productservice.service;
+
+
+
+public interface ProductService {
+
+	// PriceDto savePrice(PriceDto priceDto);
+	 //PriceDto getPriceByproductName(String productName);
+}

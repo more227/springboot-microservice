@@ -1,0 +1,23 @@
+package com.microservice.leadassessment.productservice;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+
+@SpringBootTest
+class ProductServiceApplicationTests extends AbstractTestNGSpringContextTests{
+
+	@Test
+	void contextLoads() {
+	}
+
+	@Autowired
+	private MockServerManager serverManager;
+
+
+
+
+	@Autowired
+	private PriceAPIClient priceAPIClient;
+}

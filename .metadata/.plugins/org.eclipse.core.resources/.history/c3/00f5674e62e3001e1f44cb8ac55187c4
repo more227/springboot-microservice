@@ -1,0 +1,7 @@
+package com.microservice.leadassessment.priceservice.entity;
+
+import java.io.Serializable;
+
+public class CompositePricekey implements Serializable{
+
+}

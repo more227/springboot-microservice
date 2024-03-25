@@ -1,0 +1,48 @@
+package com.microservice.leadassessment.productservice.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.microservice.leadassessment.productservice.dto.AttributesDto;
+import com.microservice.leadassessment.productservice.dto.ProductDto;
+import com.microservice.leadassessment.productservice.entity.Attributes;
+import com.microservice.leadassessment.productservice.entity.Product;
+import com.microservice.leadassessment.productservice.repository.AttributeRepository;
+
+public class ProductMapper {
+	private static AttributeRepository attributeRepository;
+
+	public static ProductDto mapToProductDto(Product product) {
+		List<Attributes> list_attributes=product.getAttributes();
+		
+		List<AttributesDto> list_attributesDto = new ArrayList<>();
+		AttributesDto adto=new AttributesDto();
+		for (Attributes attributes : list_attributes) {
+			 adto.setName(attributes.getName()); 
+			 adto.setValue(attributes.getValue());
+			 list_attributesDto.add(adto);
+		}	
+		
+		ProductDto productDto = new ProductDto(
+				product.getProductname(),
+				product.getBrand(),
+				product.getDescription(),
+				list_attributesDto
+		);
+		return productDto;
+	}
+	
+	public static Product mapToProduct(ProductDto productDto) {
+		
+		List<Attributes> listattributes = attributeRepository.findByproductName(productDto.getProductname());
+		
+		
+		Product product = new Product(
+				productDto.getProductname(),
+				productDto.getBrand(),
+				productDto.getDescription(),
+				listattributes
+		);
+		return product;
+	}
+}

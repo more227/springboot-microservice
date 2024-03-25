@@ -1,0 +1,54 @@
+package com.microservice.leadassessment.priceservice;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class Testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Testing test = new Testing();
+		test.display("testing java code");
+		test.charcount("aaabbsssaaaccccdd");
+	}
+	
+	public void charcount(String str) {
+	
+	String result ="";	
+	        int count = 1;
+	        for (int i = 0; i < str.length(); i = i + count) {
+	            count = 1;
+	            for (int j = i + 1; j < str.length(); j++) {
+	                if (str.charAt(i) == str.charAt(j)) {
+	                    count = count + 1;
+	                } else {
+	                   
+	                    break;
+	                }
+	            }//end of inner for
+	            result =result+str.charAt(i) + "" + (count-1);
+	           
+	        }//end of outer for
+	        
+	        System.out.println("final output : "+result);
+	}
+	
+	public void display(String input)
+	{
+		
+		Character firstNonRepeatedChar =input.trim()
+	             .toLowerCase()
+	             .chars()
+	             .mapToObj(i->(char)i).collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new, Collectors.counting()))
+	             .entrySet()
+	             .stream()
+	             .filter(i->i.getValue()==1).map(Map.Entry::getKey)
+	             .collect(Collectors.toList()).get(0);
+		
+		 System.out.println("first nonrepeatedchar  : "+firstNonRepeatedChar);
+	}
+
+}

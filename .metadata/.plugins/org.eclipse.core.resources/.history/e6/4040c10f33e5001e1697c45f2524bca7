@@ -1,0 +1,16 @@
+package com.microservice.leadassessment.priceservice;
+
+public class Testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Testing test = new Testing();
+		test.display("aabbbccdddd");
+	}
+	
+	public void display(String value)
+	{
+		
+	}
+
+}

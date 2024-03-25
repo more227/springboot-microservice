@@ -1,0 +1,20 @@
+package com.microservice.leadassessment.productservice.service;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.microservice.leadassessment.productservice.dto.InventoryDto;
+import com.microservice.leadassessment.productservice.dto.PriceDto;
+
+@FeignClient(url = "http://localhost:8091", value="INVENTORYE-SERVICE")
+public interface InventoryAPIClient {
+	
+    @GetMapping("api/shopping/inventory/{productName}")
+    InventoryDto getDepartment(@PathVariable("productName") String productName);
+
+}

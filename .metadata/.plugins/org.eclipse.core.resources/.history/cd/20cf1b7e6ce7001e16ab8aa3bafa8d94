@@ -1,0 +1,13 @@
+package com.microservice.leadassessment.serviceresitory;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ServiceResitoryApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceResitoryApplication.class, args);
+	}
+
+}

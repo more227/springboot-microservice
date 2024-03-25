@@ -1,0 +1,40 @@
+package com.microservice.leadassessment.productservice.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.microservice.leadassessment.productservice.dto.AttributesDto;
+import com.microservice.leadassessment.productservice.dto.ProductDto;
+import com.microservice.leadassessment.productservice.entity.Attributes;
+import com.microservice.leadassessment.productservice.entity.Product;
+import com.microservice.leadassessment.productservice.repository.AttributeRepository;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class ProductMapper {
+	private static AttributeRepository attributeRepository;
+
+	public static ProductDto mapToProductDto(Product product) {
+		
+		ProductDto productDto = new ProductDto(
+				product.getProductname(),
+				product.getBrand(),
+				product.getDescription(),
+				null,
+				null,
+				null
+		);
+		return productDto;
+	}
+	
+	public static Product mapToProduct(ProductDto productDto) {	
+		
+		Product product = new Product(
+				productDto.getProductname(),
+				productDto.getBrand(),
+				productDto.getDescription()			
+		);
+		return product;
+	}
+}

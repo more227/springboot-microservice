@@ -1,0 +1,29 @@
+package com.microservice.leadassessment.productservice.mapper;
+
+import com.microservice.leadassessment.productservice.dto.ProductDto;
+import com.microservice.leadassessment.productservice.entity.Product;
+
+public class ProductMapper {
+
+	public static ProductDto mapToProductDto(Product product) {
+		
+		ProductDto productDto = new ProductDto(
+				product.getProductname(),
+				product.getBrandb(),
+				product.getDescription(),
+				product.getAttributes()
+		);
+		return productDto;
+	}
+	
+	public static Product mapToProduct(ProductDto productDto) {
+		
+		Product product = new Product(
+				productDto.getName(),
+				productDto.getName(),
+				productDto.getDescription(),
+				productDto.getAttributes()
+		);
+		return product;
+	}
+}

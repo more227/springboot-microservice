@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.entity;
+
+public class CompositeAttributeskey {
+
+}

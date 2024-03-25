@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.dto;
+
+public class InventoryDto {
+
+}

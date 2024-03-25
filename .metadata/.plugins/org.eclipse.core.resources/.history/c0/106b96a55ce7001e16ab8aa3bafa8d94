@@ -1,0 +1,27 @@
+package com.microservice.leadassessment.productservice;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.microservice.leadassessment.productservice.dto.PriceDto;
+import com.microservice.leadassessment.productservice.service.PriceAPIClient;
+
+@SpringBootTest
+class ProductServiceApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+	@Autowired
+	private PriceAPIClient priceAPIClient;
+	
+	@Test
+	public void testPrice()
+	{
+		PriceDto priceDto = priceAPIClient.getPriceByProductName("Laptop");
+		System.out.println(priceDto.getAmount()+priceDto.getCurrency());
+		
+	}
+}

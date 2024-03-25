@@ -1,0 +1,7 @@
+package com.microservice.leadassessment.inventoryservice.entity;
+
+import java.io.Serializable;
+
+public class CompositeInventorykey implements Serializable{
+
+}

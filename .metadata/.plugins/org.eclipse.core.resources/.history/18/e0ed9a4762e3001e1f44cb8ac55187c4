@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.priceservice.entity;
+
+public class CompositePricekey {
+
+}

@@ -1,0 +1,38 @@
+package com.microservice.leadassessment.productservice.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.microservice.leadassessment.productservice.dto.ProductDto;
+import com.microservice.leadassessment.productservice.service.ProductService;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping("api/shopping/product")
+@AllArgsConstructor
+public class ProductController {
+
+	private ProductService productService;
+	
+	@PostMapping
+    public ResponseEntity<ProductDto> savePrice(@RequestBody ProductDto productDto){
+		ProductDto savedProduct = productService.saveProduct(productDto);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    }
+	
+	@GetMapping("{productName}")
+    public ResponseEntity<Object> getDepartment(@PathVariable("productName") String productName){
+		ProductDto productDto = productService.getProductByname(productName);
+		if(productDto !=null)
+			return new ResponseEntity<>(productDto, HttpStatus.OK);
+		else
+			
+    }
+}

@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.inventoryservice.entity;
+
+public class Compositeinventorykey {
+
+}

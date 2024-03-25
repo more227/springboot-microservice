@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.mapper;
+
+public class ProductMapper {
+
+}

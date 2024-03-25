@@ -1,0 +1,23 @@
+package com.microservice.leadassessment.productservice.entity;
+
+
+
+import lombok.*;
+
+import jakarta.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+@SecondaryTable(name = "attributes")
+@Embeddable
+public class Attributes {
+    
+	@Column(name = "name", table = "attributes")
+    private String name;
+	@Column(name = "value", table = "attributes")
+    private String value;
+   
+}

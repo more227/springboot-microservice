@@ -1,0 +1,29 @@
+package com.microservice.leadassessment.productservice.entity;
+
+
+
+import lombok.*;
+
+import jakarta.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "attributes")
+public class Attributes {
+    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long Id;
+    private String name;	
+    private String value;
+    private String Productname;
+   
+   // @Id
+   // @Transient
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "fk_product")
+	private Product product;
+}

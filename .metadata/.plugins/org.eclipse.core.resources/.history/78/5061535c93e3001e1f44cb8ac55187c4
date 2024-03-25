@@ -1,0 +1,8 @@
+package com.microservice.leadassessment.productservice.exception;
+
+public class Snippet {
+	public static void main(String[] args) {
+		ResourceNotFoundException
+	}
+}
+

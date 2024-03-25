@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.controller;
+
+public class ProductController {
+
+}

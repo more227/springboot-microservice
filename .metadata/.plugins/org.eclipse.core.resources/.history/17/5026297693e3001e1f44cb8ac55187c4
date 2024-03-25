@@ -1,0 +1,5 @@
+package com.microservice.leadassessment.productservice.exception;
+
+public class ResourceNotFoundException {
+
+}
